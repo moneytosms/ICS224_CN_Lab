@@ -10,8 +10,13 @@ void print_tables(int cost_matrix[][num_routers],
     cout << "Routing table for: " << char('A' + i) << endl;
     cout << "Dest\tCost\tNext_hop" << endl;
     for (int j = 0; j < num_routers; j++) {
-      cout << char('A' + j) << "\t" << cost_matrix[i][j] << "\t"
-           << char('A' + next_hop[i][j]) << endl;
+      cout << char('A' + j) << "\t"
+           << ((cost_matrix[i][j] == inf) ? "inf"
+                                          : to_string(cost_matrix[i][j]))
+           << "\t"
+           << ((next_hop[i][j] == -1) ? "-"
+                                      : string(1, char('A' + next_hop[i][j])))
+           << endl;
     }
     cout << endl;
   }
@@ -34,8 +39,11 @@ int main() {
     }
   }
 
+  cout << "Iteration " << 0 << ": " << endl;
+  print_tables(cost_matrix, next_hop);
+
   for (int i = 0; i < num_routers; i++) {
-    cout << "Iteration" << i + 1 << ": " << endl;
+    cout << "Iteration " << i + 1 << ": " << endl;
     for (int j = 0; j < num_routers; j++) {
       if (cost_matrix[i][j] != inf) {
         for (int k = 0; k < num_routers; k++) {
